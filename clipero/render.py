@@ -556,7 +556,8 @@ def render(spec_path, log=print):
     cmd = [herramientas.ruta("ffmpeg") or "ffmpeg", "-v", "error", "-y"]
     for s in segs:
         cmd += ["-i", str(s)]
-    cmd += ["-filter_complex_script", str(fgs), "-map", "[v]", "-map", "[ac]", "-r", str(FPS),
+    # el grafo va en línea: -filter_complex_script no existe en ffmpeg 8 (filter.txt queda solo para depurar)
+    cmd += ["-filter_complex", graph, "-map", "[v]", "-map", "[ac]", "-r", str(FPS),
             "-t", f"{total:.3f}", "-c:v", "libx264", "-crf", "20", "-preset", "medium", "-pix_fmt", "yuv420p",
             "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", str(partial)]
     log("ffmpeg …")
