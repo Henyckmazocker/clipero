@@ -1,0 +1,23 @@
+data/
+out/
+bin/
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+web/node_modules/
+web/dist/
+web/*.tsbuildinfo
+# Datos de la instancia de cada usuario (viven en la carpeta de trabajo, no en el repo)
+/layouts/
+/sources.yaml
+/branding.yaml
+/app.yaml
+/*.csv
+/assets/brand/
+# Build del frontend (va dentro del wheel, pero no se versiona)
+/clipero/app/static/
+# Locales de cada uno
+.claude/settings.local.json
+.clipero/
+.env

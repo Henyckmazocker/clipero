@@ -1,0 +1,11 @@
+# Debe fallar: es el arco de ejemplo sin el rótulo `gancho` (el único obligatorio).
+slug: elxokas-sin-gancho
+formato: arco
+tono: neutro
+fuente: elxokas
+titulo: "Arco sin gancho"
+tramos:
+  - {vod: "2909530977", start: 4726.20, end: 4730.90}
+  - {vod: "2909530977", start: 4742.55, end: 4753.80}
+  - {vod: "2909530977", start: 4761.40, end: 4775.60}
+rotulos: []

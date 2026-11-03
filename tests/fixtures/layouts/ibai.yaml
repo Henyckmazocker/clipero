@@ -1,0 +1,12 @@
+# Co-streams de Worlds de Ibai: la realización alterna dos escenas (medido sobre fotogramas de los VODs
+# 2915851966, 2914173138 y 2915065087). Fuera de Worlds no hay recuadro: manda la escena sin `facecam`.
+fuente: ibai
+entrada: 1920x1080
+escenas:
+  partida:                  # retransmisión a pantalla completa + recuadro del plató abajo a la derecha
+    # El marco del recuadro mide x 1428–1920, y 515–790 en 2915851966 y x 1453–1920, y 546–808 en
+    # 2914173138: el recorte es la intersección, para no meter juego en ninguno de los dos.
+    facecam: {x: 1460, y: 550, w: 460, h: 240}   # → arriba, 1080 de ancho (el marco se detecta alrededor)
+    juego:   {x: 0, y: 0, w: 1920, h: 1080}      # → franja 16:9 de 1080×608
+  plato:                    # plató a pantalla completa (4 personas) y escena por defecto
+    ancho: true             # el 16:9 entero a 1080×608, centrado, fondo difuminado

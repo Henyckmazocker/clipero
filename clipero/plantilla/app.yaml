@@ -1,0 +1,12 @@
+# Valores por defecto del formulario de Tanda (los edita la app en Configuración › Tanda).
+claude:
+  modo: ninguno     # ninguno | api_key | suscripcion
+tanda:
+  clips: 5          # 1-10, máximo por tanda
+  dias: 7           # 1-30, ventana de `vods`
+  editorial: mixta  # mixta | positiva | critica
+  modelo: claude-opus-5-5
+modelos:            # opciones del selector de modelo
+  - claude-opus-5-5
+  - sonnet
+  - haiku

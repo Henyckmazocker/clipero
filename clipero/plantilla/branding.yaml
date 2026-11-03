@@ -1,0 +1,9 @@
+# Marca del canal. render la aplica a cada short (marca de agua, color del gancho) y al meta.md.
+# Todo vacío = sin marca.
+nombre: ""
+handle: ""
+lema: ""
+color: ""
+marca_agua: ""
+linea_descripcion: ""
+hashtag: ""

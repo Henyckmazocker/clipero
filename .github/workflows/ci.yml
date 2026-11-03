@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} · Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.12"]
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Instalar
+        run: python -m pip install -e ".[dev,app]"
+      - name: Tests
+        run: pytest -q
+      - name: Carpeta de trabajo
+        run: clipero init "$RUNNER_TEMP/c"
+      # desde aquí la carpeta de trabajo es la recién creada (los tests de arriba no deben verla)
+      - name: Herramientas (ffmpeg, deno, TwitchDownloaderCLI, Whisper)
+        run: clipero setup
+        env:
+          CLIPERO_HOME: ${{ runner.temp }}/c
+      - name: Diagnóstico
+        run: clipero doctor
+        env:
+          CLIPERO_HOME: ${{ runner.temp }}/c
+      - name: Prueba de humo (render real)
+        run: pytest -q -m humo
+        env:
+          CLIPERO_HOME: ${{ runner.temp }}/c

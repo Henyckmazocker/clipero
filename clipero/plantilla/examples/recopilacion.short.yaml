@@ -1,0 +1,16 @@
+# Recopilación de 4 tramos de dos VODs: Twitch 2909530977 (elxokas, 1 y 2) y YouTube u8dSOKoNJp0 (Ibai, 3 y 4).
+# Hilo: lo que se dice sobre la Velada del Año VI antes de que empiece.
+slug: velada-lo-que-se-dice-antes
+formato: recopilacion
+tono: neutro
+fuente: elxokas
+titulo: "La Velada del Año VI: lo que se dice antes de pelear"
+descripcion: "Cuatro frases sobre la Velada: Xokas defiende la venta a Netflix y, en el pesaje, la pelea que parecía caída vuelve."
+tramos:
+  - {vod: "2909530977", start: 3996.50, end: 4004.85}   # 0.0 – 8.35
+  - {vod: "2909530977", start: 4034.55, end: 4042.55}   # 8.35 – 16.35
+  - {vod: "u8dSOKoNJp0", start: 6232.05, end: 6238.60}  # 16.35 – 22.9
+  - {vod: "u8dSOKoNJp0", start: 12412.30, end: 12417.05} # 22.9 – 27.65
+rotulos:
+  - {t: 0.0, dur: 2.5, tipo: gancho, texto: "LO QUE NADIE DICE\nANTES DE LA VELADA…"}
+voz: null

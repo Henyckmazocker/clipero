@@ -1,0 +1,16 @@
+# Arco de 3 tramos del Twitch 2909530977 (elxokas), ventana 1 (78:05–80:05, pico 79:35).
+# Xokas defiende que Ibai venda la Velada a Netflix; la tesis, la objeción de la comunidad, el remate.
+slug: elxokas-velada-netflix
+formato: arco
+tono: critica
+fuente: elxokas
+titulo: "Xokas defiende que Ibai venda la Velada a Netflix"
+descripcion: "Xokas defiende la decisión de Ibai y rebate que la gente no tenga Netflix: «mucha más de la que crees»."
+tramos:
+  - {vod: "2909530977", start: 4726.20, end: 4730.90}   # 0.0 – 4.7: «Defiendo plenamente la decisión de Ibai … 100 %»
+  - {vod: "2909530977", start: 4742.55, end: 4753.80}   # 4.7 – 15.95: «lo hizo seis años … que lo pirate»
+  - {vod: "2909530977", start: 4761.40, end: 4775.60}   # 15.95 – 30.15: «¿Quién no tiene Netflix? … Netflix, pirata»
+rotulos:
+  - {t: 0.0, dur: 2.5, tipo: gancho, texto: "NADIE ESPERABA\nESTA RESPUESTA…"}
+zoom: [{t: 24.0, dur: 1.6, factor: 1.2}]
+voz: null

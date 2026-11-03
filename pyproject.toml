@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clipero"
+version = "0.1.0"
+description = "Pipeline local de Shorts a partir de VODs de streamers hispanos"
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+classifiers = [
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.12",
+    "Environment :: Console",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "faster-whisper==1.2.1",
+    "av<17",            # faster-whisper 1.2.1 se rompe con av 19
+    "opencv-python",
+    "pyyaml",
+    "numpy",
+    "yt-dlp[default]>=2026.10.26",   # versiones anteriores daban 403 en YouTube
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+app = ["fastapi", "uvicorn[standard]", "httpx", "ruamel.yaml>=0.18", "claude-agent-sdk"]
+
+[project.urls]
+Homepage = "https://github.com/Henyckmazocker/clipero"
+Repository = "https://github.com/Henyckmazocker/clipero"
+Issues = "https://github.com/Henyckmazocker/clipero/issues"
+
+[project.scripts]
+clipero = "clipero.cli:main"
+
+[tool.setuptools]
+packages = ["clipero", "clipero.app"]
+
+[tool.setuptools.package-data]
+clipero = ["plantilla/**", "recursos/**"]
+"clipero.app" = ["static/**"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not humo'"
+markers = ["humo: prueba de humo con ffmpeg real (clipero setup + render); se pide con -m humo"]

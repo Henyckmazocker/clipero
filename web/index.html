@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clipero</title>
+    <script>
+      // Antes de pintar: tema según el sistema o la elección guardada (evita el parpadeo).
+      (function () {
+        var c = localStorage.getItem('clipero-tema');
+        var oscuro = c === 'oscuro' || ((!c || c === 'sistema') && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('app-dark', oscuro);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

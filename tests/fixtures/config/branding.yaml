@@ -1,0 +1,9 @@
+# Marca del canal. render la aplica a cada short (marca de agua, color del gancho) y al meta.md
+# (línea fija al final de la descripción + hashtag). Si este fichero no existe, no se aplica marca.
+nombre: "Canal de Ejemplo"
+handle: "@canalejemplo"
+lema: "Clips con buen humor."
+color: "0x2A6FDB"                 # azul de la marca (formato ffmpeg); fondo del gancho y de la marca de agua
+marca_agua: "«CANAL DE EJEMPLO»"  # arriba a la izquierda, todo el clip
+linea_descripcion: "Canal de Ejemplo (@canalejemplo). Si te ha gustado, el directo entero sigue en su canal."
+hashtag: "#canalejemplo"

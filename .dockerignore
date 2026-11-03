@@ -1,0 +1,13 @@
+data/
+out/
+.venv/
+web/node_modules/
+web/dist/
+clipero/app/static/
+.git
+.github
+*.csv
+*.egg-info
+**/__pycache__
+.pytest_cache
+bin/

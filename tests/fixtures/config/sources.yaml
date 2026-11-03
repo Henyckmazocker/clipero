@@ -1,0 +1,62 @@
+# Canales a rastrear (España). Una fuente que emite en las dos plataformas se
+# ingiere por Twitch (siempre trae chat). El usuario puede añadir líneas sin tocar código.
+- id: ibai                 # slug, también nombre de layouts/<id>.yaml
+  nombre: Ibai
+  tamaño: grande           # grande | mediano
+  youtube: "https://www.youtube.com/@IbaiLlanos/streams"   # opcional
+  twitch: ibai             # opcional; al menos uno de los dos
+  credito: "Ibai (twitch.tv/ibai)"
+- id: elxokas
+  nombre: elxokas
+  tamaño: grande
+  twitch: elxokas
+  credito: "elxokas (twitch.tv/elxokas)"
+- id: auronplay
+  nombre: AuronPlay
+  tamaño: grande
+  twitch: auronplay
+  credito: "AuronPlay (twitch.tv/auronplay)"
+- id: thegrefg
+  nombre: TheGrefg
+  tamaño: grande
+  twitch: thegrefg
+  credito: "TheGrefg (twitch.tv/thegrefg)"
+- id: illojuan
+  nombre: IlloJuan
+  tamaño: grande
+  twitch: illojuan
+  credito: "IlloJuan (twitch.tv/illojuan)"
+- id: knekro
+  nombre: Knekro
+  tamaño: mediano
+  twitch: knekro
+  credito: "Knekro (twitch.tv/knekro)"
+- id: djmariio
+  nombre: DjMaRiiO
+  tamaño: mediano
+  twitch: djmariio
+  credito: "DjMaRiiO (twitch.tv/djmariio)"
+- id: perxitaa
+  nombre: Perxitaa
+  tamaño: mediano
+  twitch: perxitaa
+  credito: "Perxitaa (twitch.tv/perxitaa)"
+- id: zeling
+  nombre: Zeling
+  tamaño: mediano
+  twitch: zeling
+  credito: "Zeling (twitch.tv/zeling)"
+- id: gerardromero
+  nombre: Gerard Romero
+  tamaño: mediano
+  twitch: gerardromero
+  credito: "Gerard Romero (twitch.tv/gerardromero)"
+
+# Reserva (sustituyen a un canal que no responda):
+# - id: ampeterby7        # sin VODs archivados el 2026-11-02
+#   nombre: Ampeterby7
+#   tamaño: mediano
+#   twitch: ampeterby7
+#   credito: "Ampeterby7 (twitch.tv/ampeterby7)"
+# Sustituidos el 2026-11-02: nilojeda (sin VODs archivados), cristinini (VODs solo para suscriptores).
+# zeling se queda aunque sus VODs sean solo para suscriptores (decisión del 2026-11-02): `vods` avisa al no poder leerlos.

@@ -1,0 +1,14 @@
+# Momento continuo (41,5 s) del YouTube u8dSOKoNJp0 (Ibai, pesaje de la Velada), ventana 1 (205:30–207:30).
+# «No hay pelea… sí que hay pelea». Sin layout.
+slug: ibai-pesaje-hay-pelea
+formato: momento
+tono: neutro
+fuente: ibai
+titulo: "En el pesaje dicen que no hay pelea… y sí que la hay"
+descripcion: "Pesaje de la Velada del Año VI: dos rivales llegan a decir que no hay pelea y acaban confirmándola."
+tramos:
+  - {vod: "u8dSOKoNJp0", start: 12375.20, end: 12416.70}
+rotulos:
+  - {t: 0.0, dur: 2.5, tipo: gancho, texto: "ESTO NO TENÍA\nQUE SALIR ASÍ…"}
+zoom: [{t: 38.8, dur: 2.2, factor: 1.25}]
+voz: null

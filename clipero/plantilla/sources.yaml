@@ -1,0 +1,11 @@
+# Canales a rastrear. Una fuente que emite en las dos plataformas se ingiere por Twitch (siempre trae chat).
+# Formato de cada canal (al menos uno de youtube / twitch):
+# - id: micanal                # slug, también nombre de layouts/<id>.yaml
+#   nombre: Mi Canal
+#   tamaño: grande             # grande | mediano
+#   youtube: "https://www.youtube.com/@micanal/streams"   # opcional
+#   twitch: micanal            # opcional
+#   credito: "Mi Canal (twitch.tv/micanal)"
+[]
+
+# Reserva (sustituyen a un canal que no responda):

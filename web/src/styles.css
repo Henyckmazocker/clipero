@@ -1,0 +1,4 @@
+:root { --marca: #e0201b; }
+html, body, #app { height: 100%; margin: 0; }
+body { font-family: system-ui, sans-serif; background: var(--p-surface-50); color: var(--p-text-color); }
+.app-dark body { background: var(--p-surface-950); }
