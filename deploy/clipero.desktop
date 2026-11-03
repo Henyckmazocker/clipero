@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Clipero
-Comment=Shorts de streamers: clips y rendimiento
-Exec=/snap/bin/chromium --app=http://127.0.0.1:8765 --class=clipero --user-data-dir=@HOME@/snap/chromium/common/clipero-app
-Icon=@HOME@/Clipero/brand/avatar.png
-StartupWMClass=clipero
-Categories=AudioVideo;Video;

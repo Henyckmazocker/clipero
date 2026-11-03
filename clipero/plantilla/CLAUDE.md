@@ -2,7 +2,7 @@
 
 Esta carpeta es tu espacio de trabajo de Clipero: pipeline local que saca Shorts verticales (20-59 s,
 narrativa editada y subtítulos) de VODs de streamers. Nunca sube nada: la subida es del usuario.
-El programa (`clipero`) está instalado aparte, en el PATH; aquí solo viven tus datos.
+El programa (`clipero`) está instalado aparte, en el PATH; aquí solo viven tus datos. Si usas Docker, `clipero` es el alias de `docker exec` del README.
 
 ## Comandos
 

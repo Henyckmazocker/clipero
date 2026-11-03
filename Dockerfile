@@ -25,12 +25,21 @@ RUN pip install --no-cache-dir ".[app]"
 # Whisper, con CLIPERO_WHISPER_DIR.
 ENV PATH=/opt/clipero/.clipero/bin:$PATH \
     CLIPERO_WHISPER_DIR=/opt/clipero/.clipero/modelos/whisper
-RUN CLIPERO_HOME=/opt/clipero clipero setup
+RUN CLIPERO_HOME=/opt/clipero clipero setup \
+ && chmod -R a+rX /opt/clipero/.clipero/bin \
+ && chmod -R a+rwX /opt/clipero/.clipero/modelos
+
+# El contenedor corre con el uid del host (--user): HOME y XDG_CONFIG_HOME escribibles para cualquier uid
+# (`init` escribe ~/.config/clipero/home) y el modelo Whisper cargable sin escribir ni fallar por permisos.
+ENV HOME=/tmp \
+    XDG_CONFIG_HOME=/tmp/.config
 
 ENV CLIPERO_HOME=/datos
 VOLUME /datos
 COPY deploy/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 EXPOSE 8765
+# rutas relativas (out/<fecha>/x.short.yaml) con `docker exec` resuelven contra /datos
+WORKDIR /datos
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["app", "--host", "0.0.0.0"]

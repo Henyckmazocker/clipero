@@ -11,55 +11,47 @@ configurar canales, marca y layouts.
 
 Licencia: AGPL-3.0-or-later (ver `LICENSE`; el software de terceros está en `THIRD_PARTY.md`).
 
-## Instalación en Linux
+## Instalación (Docker)
 
-Linux x64 y arm64. Necesitas Python 3.12 y [`uv`](https://docs.astral.sh/uv/).
-
-```bash
-uv tool install "clipero[app]"   # alternativa: pipx install "clipero[app]"
-clipero init                     # crea la carpeta de trabajo ~/Clipero
-clipero setup                    # baja ffmpeg (si no lo tienes), deno, TwitchDownloaderCLI y el modelo Whisper
-clipero app --abrir              # arranca la app en http://127.0.0.1:8765 y abre el navegador
-```
-
-Sin el extra `app` (`uv tool install clipero`) tienes solo la línea de comandos.
-
-`clipero doctor` comprueba la instalación: una tabla con cada herramienta, su ruta, su versión y un
-✓/✗ (solo da ✓ a un binario que arranca), más el modo de Claude. Sale con código 1 si falta algo
-obligatorio.
-
-### Plan B: ffmpeg y deno con `apt`
-
-Si `clipero setup` no puede bajar algo (red restringida, arquitectura rara), instala lo del sistema y
-Clipero lo encontrará en el PATH:
+La única vía de instalación es la imagen Docker (Linux x64 y arm64; la imagen ya trae ffmpeg, deno,
+TwitchDownloaderCLI y Whisper):
 
 ```bash
-sudo apt install ffmpeg
-curl -fsSL https://deno.land/install.sh | sh   # deno, el runtime de JS que usa yt-dlp para YouTube
+mkdir -p ~/Clipero   # antes del docker run: si no existe, Docker la crea como root
+docker run -d --name clipero --restart unless-stopped \
+  --user "$(id -u):$(id -g)" -p 127.0.0.1:8765:8765 -v ~/Clipero:/datos \
+  ghcr.io/henyckmazocker/clipero
 ```
 
-`TwitchDownloaderCLI` y el modelo Whisper siguen saliendo de `clipero setup`. Necesita `libicu`
-(`sudo apt install libicu-dev` en Debian y Ubuntu).
+Abre <http://127.0.0.1:8765>. `/datos` es la carpeta de trabajo (la imagen la crea con `clipero init`
+si está vacía) y es el directorio de trabajo del contenedor. **La API de la app no tiene
+autenticación**, y desde ella se puede cambiar hasta la API key: publica el puerto **solo en
+`127.0.0.1`**, como arriba, y nunca en `0.0.0.0` ni en una red a la que no te fíes.
 
-### Docker
+**Actualizar:** baja la imagen nueva y vuelve a crear el contenedor (tus datos están en `~/Clipero`):
 
 ```bash
-docker run -p 127.0.0.1:8765:8765 -v ~/Clipero:/datos ghcr.io/henyckmazocker/clipero
+docker pull ghcr.io/henyckmazocker/clipero
+docker rm -f clipero
+# ...y el mismo docker run de arriba
+docker exec --user "$(id -u):$(id -g)" clipero clipero init --actualizar   # refresca CLAUDE.md y la skill de ~/Clipero
 ```
 
-La imagen lleva ffmpeg, deno, TwitchDownloaderCLI y Whisper, y usa `/datos` como carpeta de trabajo
-(la crea con `clipero init` si está vacía). **La API de la app no tiene autenticación**, y desde ella
-se puede cambiar hasta la API key: publica el puerto **solo en `127.0.0.1`**, como en el comando de
-arriba, y nunca en `0.0.0.0` ni en una red a la que no te fíes. Dentro del contenedor no hay `claude`,
-así que solo están los modos `ninguno` y `api_key`.
+**Comprobar la instalación:**
 
-### macOS y Windows
+```bash
+docker exec --user "$(id -u):$(id -g)" clipero clipero doctor
+```
 
-Sin soporte. Si quieres probarlo, usa Docker.
+Muestra una tabla con cada herramienta, su ruta, su versión y un ✓/✗ (solo da ✓ a un binario que
+arranca), más el modo de Claude. Sale con código 1 si falta algo obligatorio.
+
+macOS y Windows no tienen soporte oficial; si quieres probarlo, la imagen es lo único que puede
+servirte.
 
 ## Carpeta de trabajo
 
-`clipero init` crea `~/Clipero` (o la ruta que le des) con la configuración y los datos:
+Dentro de `~/Clipero` (que `clipero init` crea al primer arranque) viven la configuración y los datos:
 
 ```
 sources.yaml  branding.yaml  app.yaml  publicados.csv  piloto.csv   configuración
@@ -71,14 +63,15 @@ CLAUDE.md  .claude/skills/tanda/SKILL.md   lo que lee Claude en el modo terminal
 .clipero/                     versión, binarios, modelos y credenciales
 ```
 
-La carpeta se resuelve en este orden: `--home DIR`, la variable `CLIPERO_HOME`, la primera línea de
-`~/.config/clipero/home` (la escribe `init`) y, si no, `~/Clipero`. Tras actualizar Clipero, ejecuta
-`clipero init --actualizar`: reescribe solo `CLAUDE.md`, la skill y `.clipero/version`; tus ficheros
-no se tocan.
+En Docker la carpeta es `/datos`, el `~/Clipero` montado (`CLIPERO_HOME=/datos`). Tras actualizar la
+imagen, ejecuta `clipero init --actualizar`: reescribe solo `CLAUDE.md`, la skill y
+`.clipero/version`; tus ficheros no se tocan.
 
 Empieza por añadir canales en la app (Configuración › Canales) o en `sources.yaml`.
 
 ## El flujo
+
+Con Docker, `clipero` es el alias de `docker exec` de más abajo (modo terminal).
 
 ```bash
 clipero vods                     # VODs recientes de tus canales, ordenados por repercusión
@@ -91,19 +84,31 @@ clipero render <short.yaml>      # baja los tramos y escribe out/<fecha>/<slug>.
 Hay `short.yaml` de ejemplo en `examples/` de tu carpeta de trabajo (los copia `clipero init`). La tanda diaria automatiza todo esto con Claude (ver abajo),
 pero se puede hacer a mano sin él.
 
-## Claude: cuatro formas de usarlo
+## Claude: tres formas de usarlo
 
-Claude es opcional. Elige el modo en la app, en Configuración › Claude (`app.yaml › claude.modo`).
+Claude es opcional. Dentro de Docker hay dos modos, porque la imagen no trae `claude`. Elige el modo en la app, en Configuración › Claude (`app.yaml › claude.modo`).
 Por defecto es `ninguno`: una instalación nueva nunca gasta tokens por su cuenta.
 
 | Modo | Qué hace |
 |---|---|
 | `ninguno` | Sin Claude desde la app. La página Tanda y «Pedir cambio» quedan desactivadas. Todo lo demás funciona. |
 | `api_key` | Las tandas y los retoques de la app usan tu API key de Anthropic (variable `ANTHROPIC_API_KEY`, o guardada desde Configuración › Claude en `.clipero/credenciales`, con permisos 0600). **Se paga por tokens**, a precio de API, aparte de cualquier suscripción Pro o Max. El coste por tanda aún no está medido (la app lo guarda en `run.json › coste_usd`). |
-| `suscripcion` | «Claude (tu suscripción, con tu `claude` instalado)». Clipero no ofrece ningún login: usa el `claude` oficial que **tú** hayas instalado y en el que **tú** hayas iniciado sesión, y nunca el binario que trae el SDK. Si no hay `claude` en el PATH, el modo no está disponible. Es una zona gris de la política del Agent SDK de Anthropic, que no permite que terceros ofrezcan el login de claude.ai en sus productos: si lo usas, es en tu cuenta y bajo tu responsabilidad, y puede cambiar si Anthropic cambia sus condiciones. |
-| Terminal | Funciona sea cual sea el modo. Abre `claude` en la carpeta de trabajo (`cd ~/Clipero && claude`) y di **«tanda de hoy»**. Ahí eres tú quien usa tu Claude; Clipero solo pone la skill `tanda`. También sirven «tanda positiva» y «tanda crítica». |
+| Terminal | Funciona sea cual sea el modo. Abre tu propio `claude` en `~/Clipero` (la carpeta montada, `cd ~/Clipero && claude`) y di **«tanda de hoy»**. La skill `tanda` llama a `clipero …`, que resuelves con un alias a `docker exec` (ver abajo). Ahí eres tú quien usa tu Claude; Clipero solo pone la skill. También sirven «tanda positiva» y «tanda crítica». |
 
 Para la API key, el coste lo pone Anthropic: revisa su tarifa vigente antes de lanzar tandas seguidas.
+
+### Modo terminal con Docker
+
+Añade a tu `~/.bashrc` (o `~/.zshrc`):
+
+```bash
+alias clipero='docker exec -i --user "$(id -u):$(id -g)" clipero clipero'
+```
+
+`docker exec` llama al binario `clipero` del contenedor llamado `clipero` (no pasa por el
+entrypoint), con `/datos` como directorio actual, así que las rutas relativas de la skill, como
+`clipero render out/<fecha>/x.short.yaml`, funcionan igual que en `~/Clipero`. Comprueba que va:
+`clipero doctor`.
 
 ### Línea editorial
 
@@ -112,26 +117,14 @@ El enfoque del texto de los shorts (`gancho`, `titulo`, `descripcion`, `hashtags
 comentado; edítalo con tu postura y tu tono. La skill lo lee antes de cada tanda y lo aplica; si lo
 borras, la tanda trabaja sin línea editorial. `init --actualizar` no lo toca nunca.
 
-## Autoarranque opcional en Linux
-
-`deploy/` trae una unidad de systemd de usuario y un lanzador de escritorio para tener la app siempre
-levantada. Desde un checkout del repo:
-
-```bash
-bash deploy/instalar.sh          # unidad `clipero-app` (con CLIPERO_HOME=%h/Clipero) + lanzador «Clipero»
-systemctl --user restart clipero-app   # tras actualizar Clipero
-```
-
-Usa el `clipero` de tu PATH. El lanzador abre la app en una ventana de Chromium del snap; si usas otro
-navegador, edita `deploy/clipero.desktop`.
-
 ## Desarrollo
 
 ```bash
+git clone https://github.com/Henyckmazocker/clipero && cd clipero
 python3.12 -m venv .venv && .venv/bin/pip install -e ".[dev,app]"
-.venv/bin/pytest -q              # y `-m humo` para la prueba con ffmpeg real (necesita `clipero setup`)
 make app                         # compila el frontend (web/ → clipero/app/static); necesita node
-.venv/bin/python -m build        # wheel + sdist (exige `make app` antes)
+make tools                       # YuNet y `clipero setup` (ffmpeg, deno, TwitchDownloaderCLI, Whisper)
+.venv/bin/pytest -q              # y `-m humo` para la prueba con ffmpeg real (necesita `make tools`)
 ```
 
 Más detalle para quien desarrolla en `CLAUDE.md`.
@@ -155,11 +148,10 @@ vertical Shorts (20-59 s, edited narrative, burned-in subtitles). It scores chat
 transcribes with Whisper, optionally lets Claude pick and write each short, and renders with ffmpeg.
 It never uploads anything. The interface is in Spanish.
 
-Linux only (x64 and arm64): `uv tool install "clipero[app]"`, then `clipero init`, `clipero setup`
-and `clipero app --abrir`. Docker works anywhere, unsupported on macOS and Windows:
-`docker run -p 127.0.0.1:8765:8765 -v ~/Clipero:/datos ghcr.io/henyckmazocker/clipero`. The app API
-has no authentication: only publish the port on 127.0.0.1. Claude is optional (`ninguno` by default;
-`api_key`, billed per token; `suscripcion`, using your own installed and logged-in `claude`; or run
-`claude` in the working folder and say "tanda de hoy"). You are responsible for the rights to the
+Install with Docker only (Linux x64 and arm64; unsupported on macOS and Windows):
+`docker run -d --name clipero --restart unless-stopped --user "$(id -u):$(id -g)" -p 127.0.0.1:8765:8765 -v ~/Clipero:/datos ghcr.io/henyckmazocker/clipero`.
+The app API has no authentication: only publish the port on 127.0.0.1. For terminal use, alias
+`clipero` to `docker exec -i --user "$(id -u):$(id -g)" clipero clipero` and run your own `claude` in `~/Clipero`. Claude is optional (`ninguno` by default;
+`api_key`, billed per token; or run your own `claude` in the working folder and say "tanda de hoy"). You are responsible for the rights to the
 material, for YouTube's reused-content policies and for the terms of Twitch and YouTube. License:
 AGPL-3.0-or-later.

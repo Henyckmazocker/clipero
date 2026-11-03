@@ -7,7 +7,7 @@ description: Saca la tanda diaria de Shorts de clipero (3–6 shorts verticales 
 
 Estás en la carpeta de trabajo de Clipero. Esta skill y `CLAUDE.md` es todo lo que necesitas:
 no preguntes nada al usuario, ejecuta la tanda entera y termina con el resumen del paso 5. Todos los
-comandos son `clipero …` (en el PATH) desde esta carpeta.
+comandos son `clipero …` (en el PATH) desde esta carpeta. Si usas Docker, `clipero` es el alias de `docker exec` del README.
 
 **Modo terminal:** esta skill funciona sin la app y sea cual sea `claude.modo` de `app.yaml`. Abre
 `claude` en esta carpeta y di «tanda de hoy»: ahí usas tu propio Claude Code y no hace falta elegir

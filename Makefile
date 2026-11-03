@@ -2,7 +2,7 @@
 YUNET_URL := https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx
 YUNET := clipero/recursos/models/face_detection_yunet_2023mar.onnx
 
-.PHONY: tools app instalar-app
+.PHONY: tools app
 tools: $(YUNET)
 	.venv/bin/clipero setup
 
@@ -11,9 +11,6 @@ $(YUNET):
 	curl -fL -o $(YUNET).part $(YUNET_URL)
 	mv $(YUNET).part $(YUNET)
 
-# make app: compila el frontend (→ clipero/app/static). make instalar-app: instala y arranca el servicio y el lanzador
+# make app: compila el frontend (→ clipero/app/static)
 app:
 	cd web && npm ci && npm run build
-
-instalar-app:
-	bash deploy/instalar.sh
