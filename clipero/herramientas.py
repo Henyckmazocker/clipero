@@ -23,8 +23,11 @@ from . import rutas
 
 TDL_VERSION = "1.56.5"
 DENO_VERSION = "2.9.8"
-BTBN_TAG = "autobuild-2026-11-02-12-51"
-BTBN_BUILD = "N-128293-gb034eb5e7e"
+# BtbN conserva las builds diarias ~2 semanas, pero las de fin de mes ~2 años: fija siempre una de fin de mes,
+# y de una rama estable (nX.Y), no de master.
+BTBN_TAG = "autobuild-2026-10-31-12-59"
+BTBN_BUILD = "n8.1.3-27-g8dca1586f4"
+BTBN_RAMA = "8.1"
 WHISPER_MODELO = "small"
 
 OBLIGATORIAS = ("ffmpeg", "ffprobe", "deno", "TwitchDownloaderCLI")
@@ -39,7 +42,7 @@ class Paquete:
 
 def _btbn(sufijo: str, ext: str, sha: str) -> Paquete:
     base = f"https://github.com/BtbN/FFmpeg-Builds/releases/download/{BTBN_TAG}"
-    return Paquete(f"{base}/ffmpeg-{BTBN_BUILD}-{sufijo}-gpl.{ext}", sha, ("ffmpeg", "ffprobe"))
+    return Paquete(f"{base}/ffmpeg-{BTBN_BUILD}-{sufijo}-gpl-{BTBN_RAMA}.{ext}", sha, ("ffmpeg", "ffprobe"))
 
 
 def _deno(destino: str, sha: str) -> Paquete:
@@ -54,8 +57,8 @@ def _tdl(sufijo: str, sha: str) -> Paquete:
 
 # arquitectura → paquetes. Solo Linux (x64 y arm64).
 FFMPEG: dict[str, tuple[Paquete, ...]] = {
-    "x64": (_btbn("linux64", "tar.xz", "2c3a505d35f78566310f6997e7a02ccda4e03112b63dab266ce439c5c719f661"),),
-    "arm64": (_btbn("linuxarm64", "tar.xz", "9711e7d8eec415f72c2a8fd207ef752cadb87c93878fa945525d210460395d68"),),
+    "x64": (_btbn("linux64", "tar.xz", "41e9c565594c390622cf968d82fa4135d9e9a11d06c1515644288cbc844e3380"),),
+    "arm64": (_btbn("linuxarm64", "tar.xz", "a08c0ee6e1c4e02139344b303002dcc7c37cf125d639f1fbd15dabee40fcb525"),),
 }
 DENO: dict[str, Paquete] = {
     "x64": _deno("x86_64-unknown-linux-gnu", "e890975bc2549807bbcc0b584ffafda72cc7c93349dd99c80483dd784f6c4609"),
