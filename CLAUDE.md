@@ -9,7 +9,7 @@ Nunca sube nada: la subida es del usuario. Este `CLAUDE.md` es para quien desarr
 (por defecto `~/Clipero`; `CLIPERO_HOME`, también `--home DIR` o `~/.config/clipero/home`, en ese orden de prioridad). La
 terminal de tanda se abre **en la carpeta de trabajo**, no en el repo (ahí están el `CLAUDE.md` y la skill que
 copia `clipero init`). Se crea con `clipero init [DIR]`; `clipero init --actualizar` refresca allí
-`CLAUDE.md` y la skill desde `clipero/plantilla/`. Cualquier comando sin `<home>/.clipero/version`
+`CLAUDE.md`, la skill y `examples/` desde `clipero/plantilla/`. Cualquier comando sin `<home>/.clipero/version`
 termina con «no hay carpeta de trabajo…».
 
 ## Comandos

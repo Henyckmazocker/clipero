@@ -34,7 +34,7 @@ autenticación**, y desde ella se puede cambiar hasta la API key: publica el pue
 docker pull ghcr.io/henyckmazocker/clipero
 docker rm -f clipero
 # ...y el mismo docker run de arriba
-docker exec --user "$(id -u):$(id -g)" clipero clipero init --actualizar   # refresca CLAUDE.md y la skill de ~/Clipero
+docker exec --user "$(id -u):$(id -g)" clipero clipero init --actualizar   # refresca CLAUDE.md, la skill y examples/ de ~/Clipero
 ```
 
 **Comprobar la instalación:**
@@ -64,7 +64,7 @@ CLAUDE.md  .claude/skills/tanda/SKILL.md   lo que lee Claude en el modo terminal
 ```
 
 En Docker la carpeta es `/datos`, el `~/Clipero` montado (`CLIPERO_HOME=/datos`). Tras actualizar la
-imagen, ejecuta `clipero init --actualizar`: reescribe solo `CLAUDE.md`, la skill y
+imagen, ejecuta `clipero init --actualizar`: reescribe solo `CLAUDE.md`, la skill, `examples/` y
 `.clipero/version`; tus ficheros no se tocan.
 
 Empieza por añadir canales en la app (Configuración › Canales) o en `sources.yaml`.
@@ -81,7 +81,9 @@ clipero transcribe <id>          # audio de las ventanas → transcripción
 clipero render <short.yaml>      # baja los tramos y escribe out/<fecha>/<slug>.mp4 + .meta.md
 ```
 
-Hay `short.yaml` de ejemplo en `examples/` de tu carpeta de trabajo (los copia `clipero init`). La tanda diaria automatiza todo esto con Claude (ver abajo),
+Hay `short.yaml` de ejemplo en `examples/` de tu carpeta de trabajo (los copia `clipero init`). Usan VODs
+públicos de Ibai y elxokas: antes de renderizarlos, da de alta el canal en Configuración › Canales
+(`render` exige el `credito` de la fuente en `sources.yaml`) y haz `ingest` del VOD y `transcribe` de su ventana. La tanda diaria automatiza todo esto con Claude (ver abajo),
 pero se puede hacer a mano sin él.
 
 ## Claude: tres formas de usarlo
